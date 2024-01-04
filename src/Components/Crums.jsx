@@ -1,41 +1,33 @@
-import React from 'react'
+import React from "react";
 import { Breadcrumbs } from "baseui/breadcrumbs";
 import { StyledLink } from "baseui/link";
-// import { useNavigate } from 'react-router-dom';
+import { EmptyFunction } from "./default";
 
+export default function Crums({ crum = [], setIsClicked = EmptyFunction }) {
+  var crumpieces = [];
 
-export default function Crums(props) {
-//   const user  = JSON.parse(localStorage.getItem("user"))
-  
-
-//     var role=user?.role?.toLocaleLowerCase()
-//     if(role==="pharmaceutical"){
-//       role="pharma"
-//     }
-
-//   const navigate=useNavigate();
-  var crumpieces=[];
-  var paths=[];
-
-    for (let i = 0; i < props.crum.length-1; i++) {
-      crumpieces[i] = props.crum[i]
-      paths[i]=crumpieces[i].toLocaleLowerCase().replace(/ /g,'')
-    }
+  for (let i = 0; i < crum.length - 1; i++) {
+    crumpieces[i] = crum[i];
+  }
   return (
     <Breadcrumbs>
-    {crumpieces.map((i) => {
-      if(i === 'Home'){
-        return <StyledLink style={{cursor:"pointer"}} key={i} >{i}</StyledLink>
-      }
-
-      else{
-        
-        return <StyledLink style={{cursor:"pointer"}} key={i} >{i}</StyledLink>        
-      }})}
-      <span>{props.crum[props.crum.length-1]}</span>
+      {crumpieces.map((i) => {
+        return (
+          <StyledLink
+            style={{ cursor: "pointer" }}
+            key={i}
+            onClick={() => setIsClicked(i)}
+          >
+            {i}
+          </StyledLink>
+        );
+      })}
+      <span
+        style={{ cursor: "pointer" }}
+        onClick={() => setIsClicked(crum[crum.length - 1])}
+      >
+        {crum[crum.length - 1]}
+      </span>
     </Breadcrumbs>
-  )
+  );
 }
-//28 {/* onClick={()=>{navigate(`/${role}`)}} */}
-//32 {/* const index=crumpieces.indexOf(i) */}
-//33 {/* onClick={()=>{navigate(`/${role}/${paths[index]}`)}} */}
