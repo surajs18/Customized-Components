@@ -7,7 +7,7 @@ function TextBox(props) {
       {props?.header !== "" && (
         <p
           style={{
-            marginBottom: "0rem",
+            marginBottom: "0.5rem",
             width: props?.width || "18rem",
             fontWeight: 900,
             fontSize: "14px",
@@ -28,6 +28,7 @@ function TextBox(props) {
           readOnly={props?.readOnly || false}
           disabled={props?.disabled || false}
           placeholder={props?.placeholder || ""}
+          autoFocus={props?.clearable || false}
         />
       </div>
       {props?.footer !== "" && (

@@ -3,11 +3,11 @@ import { Input, SIZE } from "baseui/input";
 
 function InputBox(props) {
   return (
-    <>
+    <div>
       {props?.header !== "" && (
         <p
           style={{
-            marginBottom: "0rem",
+            marginBottom: "0.5rem",
             width: props?.width || "18rem",
             fontWeight: 900,
             fontSize: "14px",
@@ -22,7 +22,7 @@ function InputBox(props) {
         value={props?.inputValue || ""}
         onChange={(e) => props.setInputValue(e.target.value)}
         type={props?.type || ""}
-        pattern={props?.pattern || ""}
+        pattern={props?.pattern === "" ? ".*" : props?.pattern}
         required={props?.required || false}
         error={props?.boxColor === "Red" ? true : false}
         positive={props?.boxColor === "Green" ? true : false}
@@ -39,6 +39,7 @@ function InputBox(props) {
         clearOnEscape={props?.clearable || false}
         startEnhancer={props?.startEnhancer || ""}
         endEnhancer={props?.endEnhancer || ""}
+        autoFocus={props?.autoFocus || false}
         overrides={{
           Root: {
             style: ({ $theme }) => ({
@@ -62,7 +63,7 @@ function InputBox(props) {
           {props?.footer}
         </p>
       )}
-    </>
+    </div>
   );
 }
 

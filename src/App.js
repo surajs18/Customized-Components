@@ -5,6 +5,8 @@ import Crums from "./Components/Crums";
 import FileInput from "./Components/FileInput";
 import InputBox from "./Components/InputBox";
 import UserForm from "./Components/UserForm";
+import InputSelect from "./Components/InputSelect";
+import InputPhone from "./Components/InputPhone";
 
 function App() {
   //modal handlers
@@ -12,7 +14,7 @@ function App() {
   const [modalCancel, setModalCancel] = useState(false);
   const [modalOkay, setModalOkay] = useState(false);
 
-  //input handlers
+  //input box handlers
   const [inputValue, setInputValue] = useState("");
   const [boxColor, setBoxColor] = useState("");
 
@@ -24,6 +26,27 @@ function App() {
 
   //file input handler
   const [file, setFile] = useState("");
+
+  //input select handlers
+  const [selectValue, setSelectValue] = useState([]);
+  const list = [
+    {
+      label: "A",
+      id: "a",
+    },
+    {
+      label: "B",
+      id: "b",
+    },
+    {
+      label: "C",
+      id: "c",
+    },
+  ];
+
+  //input phone handler
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
 
   return (
     <>
@@ -68,7 +91,7 @@ function App() {
       <br />
 
       <div>
-        <h3>Input</h3>
+        <h3>Input Box</h3>
         <InputBox
           inputValue={inputValue}
           setInputValue={setInputValue}
@@ -81,6 +104,7 @@ function App() {
           size={"larger"}
           placeholder="hi"
           clearable={true}
+          autoFocus={false}
           startEnhancer={"@"}
           endEnhancer="@"
           width=""
@@ -93,13 +117,13 @@ function App() {
             type: String {default: "", optional parameter},
             pattern: String {default: "", optional parameter},
             required: true||false {default: false, optional parameter},
-            redInput: true||false {default: false, optional parameter},
-            greenInput: true||false {default: false, optional parameter},
+            boxColor: "Red" || "Green" || "" {default: "", optional parameter},
             readOnly: true||false {default: false, optional parameter},
             diabled: true||false {default: false, optional parameter},
             size: "mini" || "larger" || "compact" {default: default, optional parameter},
             placeholder: String {default: "", optional parameter},
             clearable: true||false {default: false, optional parameter},
+            autoFocus: true||false {default: false, optional parameter},
             startEnhancer: String || HTML Tag || HTML Element {default: "", optional parameter},
             endEnhancer: String || HTML Tag || HTML Element {default: "", optional parameter},
             width: CSS unit {default: 18rem, optional parameter},
@@ -143,6 +167,7 @@ function App() {
           readOnly={false}
           disabled={false}
           placeholder="hi"
+          autoFocus={false}
           width=""
           header="head"
           footer="foot"
@@ -153,11 +178,92 @@ function App() {
             textValue: String || Number { compulsory parameter },
             setTextValue: function to handle the state of isOpen { compulsory parameter, returns String },
             required: true||false {default: false, optional parameter},
-            redInput: true||false {default: false, optional parameter},
-            greenInput: true||false {default: false, optional parameter},
+            boxColor: "Red" || "Green" || "" {default: "", optional parameter},
             readOnly: true||false {default: false, optional parameter},
             diabled: true||false {default: false, optional parameter},
-            placeholder: String {default: "", optional parameter},            
+            placeholder: String {default: "", optional parameter},    
+            autoFocus: true||false {default: false, optional parameter},        
+            width: CSS unit {default: 18rem, optional parameter},
+            header: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
+            footer: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
+        */}
+      </div>
+
+      <br />
+      <br />
+
+      <div>
+        <h3>Phone Number</h3>
+        <InputPhone
+          country={country}
+          setCountry={setCountry}
+          phone={phone}
+          setPhone={setPhone}
+          pattern=""
+          required={true}
+          boxColor={boxColor}
+          disabled={false}
+          size={"larger"}
+          placeholder="9656732578"
+          clearable={true}
+          autoFocus={false}
+          width=""
+          header="head"
+          footer="foot"
+        />
+        {/* 
+            country: {dialCode: "", id: "", label: ""} { compulsory parameter },
+            setCountry: function to handle the state of country { compulsory parameter, returns object },
+            phone: String || Number { compulsory parameter },
+            setPhone: function to handle the state of phone { compulsory parameter, returns String },            type: String {default: "", optional parameter},
+            pattern: String {default: "", optional parameter},
+            required: true||false {default: false, optional parameter},
+            boxColor: "Red" || "Green" || "" {default: "", optional parameter},
+            diabled: true||false {default: false, optional parameter},
+            size: "mini" || "larger" || "compact" {default: default, optional parameter},
+            placeholder: String {default: "", optional parameter},
+            clearable: true||false {default: false, optional parameter},
+            autoFocus: true||false {default: false, optional parameter},
+            width: CSS unit {default: 18rem, optional parameter},
+            header: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
+            footer: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
+        */}
+      </div>
+
+      <br />
+      <br />
+
+      <div>
+        <h3>Input Select</h3>
+        <InputSelect
+          inputValue={selectValue}
+          setInputValue={setSelectValue}
+          list={list}
+          required={true}
+          boxColor={boxColor}
+          disabled={false}
+          size={"larger"}
+          placeholder="hi"
+          clearable={true}
+          autoFocus={false}
+          multiple={false}
+          width=""
+          header="head"
+          footer="foot"
+        />
+        {/* 
+            inputValue: [] { compulsory parameter },
+            setInputValue: function to handle the state of isOpen { compulsory parameter, returns String },
+            list: [{label: String, id: String}] {default: [], optional parameter},
+            required: true||false {default: false, optional parameter},
+            boxColor: "Red" || "Green" || "" {default: "", optional parameter},
+            diabled: true||false {default: false, optional parameter},
+            size: "mini" || "larger" || "compact" {default: default, optional parameter},
+            placeholder: String {default: "", optional parameter},
+            clearable: true||false {default: false, optional parameter},
+            autoFocus: true||false {default: false, optional parameter},
+            startEnhancer: String || HTML Tag || HTML Element {default: "", optional parameter},
+            endEnhancer: String || HTML Tag || HTML Element {default: "", optional parameter},
             width: CSS unit {default: 18rem, optional parameter},
             header: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
             footer: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
@@ -184,6 +290,7 @@ function App() {
       <br />
 
       <div>
+        <h3>File Input</h3>
         <FileInput
           file={file}
           setFiles={setFile}
@@ -194,7 +301,7 @@ function App() {
         />
         <button
           onClick={(e) => {
-            console.log(file)
+            console.log(file);
           }}
         >
           Console Log: "file" variable
@@ -213,8 +320,12 @@ function App() {
       <br />
 
       <div>
+        <h3 style={{ textAlign: "center" }}>User Form</h3>
         <UserForm />
       </div>
+
+      <br />
+      <br />
     </>
   );
 }
