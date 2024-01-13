@@ -41,13 +41,13 @@ export default function UserForm(props) {
     const lastNameRegex = props?.lastName?.validation || /^[A-Za-z]+$/;
     const phoneRegex = props?.phone?.validation || /^\d{10}$/;
     const emailRegex = props?.email?.validation || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const flatRegex = props?.flat?.validation || /.*/;
-    const areaRegex = props?.area?.validation || /.*/;
-    const landmarkRegex = props?.landmark?.validation || /.*/;
-    const pinRegex = props?.pin?.validation || /.*/;
-    const cityRegex = props?.city?.validation || /.*/;
-    const stateRegex = props?.state?.validation || /.*/;
-    const residantCountryRegex = props?.residantCountry?.validation || /.*/;
+    const flatRegex = props?.flat?.validation || /^[A-Za-z0-9]+$/;
+    const areaRegex = props?.area?.validation || /^[A-Za-z0-9]+$/;
+    const landmarkRegex = props?.landmark?.validation || /^[A-Za-z0-9]+$/;
+    const pinRegex = props?.pin?.validation || /^[A-Za-z0-9]+$/;
+    const cityRegex = props?.city?.validation || /^[A-Za-z0-9]+$/;
+    const stateRegex = props?.state?.validation || /^[A-Za-z0-9]+$/;
+    const residantCountryRegex = props?.residantCountry?.validation || /^[A-Za-z0-9]+$/;
 
     // matchings
     var firstNameMatch = firstNameRegex.test(firstName) ? "Green" : "Red";
@@ -111,8 +111,8 @@ export default function UserForm(props) {
         residantCountry,
       };
       // props.userData(userData);
-      console.log("test case passed")
-      console.log(userData)
+      console.log("test case passed");
+      console.log(userData);
     }
   }
 
@@ -129,57 +129,74 @@ export default function UserForm(props) {
 
   return (
     <form onSubmit={errorHandlers}>
-      <div
-        style={{
-          display: "flex",
-          flex: "1 0 23rem",
-          flexWrap: "wrap",
-          gap: "1rem 10rem",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <InputBox
-          inputValue={firstName}
-          setInputValue={setFirstName}
-          type="name"
-          pattern={props?.firstName?.validation || ""}
-          required={props?.firstName?.required || true}
-          boxColor={firstNameColor}
-          readOnly={props?.firstName?.readOnly || false}
-          disabled={props?.firstName?.disabled || false}
-          size={props?.firstName?.size || ""}
-          placeholder={props?.firstName?.placeholder || "Sam"}
-          clearable={props?.firstName?.clearable || true}
-          startEnhancer={props?.firstName?.startEnhancer || ""}
-          endEnhancer={props?.firstName?.endEnhancer || ""}
-          width={props?.firstName?.width || ""}
-          header={props?.firstName?.header || "First Name"}
-          footer={props?.firstName?.footer || ""}
-          autoFocus={props?.firstName?.autoFocus || true}
-        />
+      <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+        <h4 style={{marginBottom: "0", marginTop: "2.5rem"}}>Name</h4>
+        <div
+          style={{
+            display: "flex",
+            // flex: "1 0 0rem",
+            flexWrap: "wrap",
+            gap: "1rem 5rem",
+            // justifyContent: "space-around",
+            alignItems: "center",
+            marginLeft: "1rem",
+          }}
+        >
+          <InputBox
+            inputValue={firstName}
+            setInputValue={setFirstName}
+            type="name"
+            pattern={props?.firstName?.validation || ""}
+            required={props?.firstName?.required || true}
+            boxColor={firstNameColor}
+            readOnly={props?.firstName?.readOnly || false}
+            disabled={props?.firstName?.disabled || false}
+            size={props?.firstName?.size || ""}
+            placeholder={props?.firstName?.placeholder || "Sam"}
+            clearable={props?.firstName?.clearable || true}
+            startEnhancer={props?.firstName?.startEnhancer || ""}
+            endEnhancer={props?.firstName?.endEnhancer || ""}
+            width={props?.firstName?.width || ""}
+            header={props?.firstName?.header || "First Name"}
+            footer={props?.firstName?.footer || ""}
+            autoFocus={props?.firstName?.autoFocus || true}
+          />
 
-        <InputBox
-          inputValue={lastName}
-          setInputValue={setLastName}
-          type="name"
-          pattern={props?.lastName?.validation || ""}
-          required={props?.lastName?.required || true}
-          boxColor={lastNameColor}
-          readOnly={props?.lastName?.readOnly || false}
-          disabled={props?.lastName?.disabled || false}
-          size={props?.lastName?.size || ""}
-          placeholder={props?.lastName?.placeholder || "Andrew"}
-          clearable={props?.lastName?.clearable || true}
-          startEnhancer={props?.lastName?.startEnhancer || ""}
-          endEnhancer={props?.lastName?.endEnhancer || ""}
-          width={props?.lastName?.width || ""}
-          header={props?.lastName?.header || "Last Name"}
-          footer={props?.lastName?.footer || ""}
-          autoFocus={props?.lastName?.autoFocus || false}
-        />
-
-        <InputSelect
+          <InputBox
+            inputValue={lastName}
+            setInputValue={setLastName}
+            type="name"
+            pattern={props?.lastName?.validation || ""}
+            required={props?.lastName?.required || true}
+            boxColor={lastNameColor}
+            readOnly={props?.lastName?.readOnly || false}
+            disabled={props?.lastName?.disabled || false}
+            size={props?.lastName?.size || ""}
+            placeholder={props?.lastName?.placeholder || "Andrew"}
+            clearable={props?.lastName?.clearable || true}
+            startEnhancer={props?.lastName?.startEnhancer || ""}
+            endEnhancer={props?.lastName?.endEnhancer || ""}
+            width={props?.lastName?.width || ""}
+            header={props?.lastName?.header || "Last Name"}
+            footer={props?.lastName?.footer || ""}
+            autoFocus={props?.lastName?.autoFocus || false}
+          />
+        </div>
+      </div>
+      <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+        <h4 style={{marginBottom: "0", marginTop: "2.5rem"}}>General Details</h4>
+        <div
+          style={{
+            display: "flex",
+            // flex: "1 0 0rem",
+            flexWrap: "wrap",
+            gap: "1rem 5rem",
+            // justifyContent: "space-around",
+            alignItems: "center",
+            marginLeft: "1rem",
+          }}
+        >
+          <InputSelect
           inputValue={gender}
           setInputValue={setGender}
           list={genderList}
@@ -233,8 +250,23 @@ export default function UserForm(props) {
           footer={props?.email?.footer || ""}
           autoFocus={props?.email?.autoFocus || false}
         />
+        </div>
+      </div>
 
-        <InputBox
+      <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+        <h4 style={{marginBottom: "0", marginTop: "2.5rem"}}>Address</h4>
+        <div
+          style={{
+            display: "flex",
+            flex: "1 0 0rem",
+            flexWrap: "wrap",
+            gap: "1rem 5rem",
+            // justifyContent: "space-around",
+            alignItems: "center",
+            marginLeft: "1rem",
+          }}
+        >
+          <InputBox
           inputValue={flat}
           setInputValue={setFlat}
           type=""
@@ -376,9 +408,21 @@ export default function UserForm(props) {
           footer={props?.residantCountry?.footer || ""}
           autoFocus={props?.residantCountry?.autoFocus || false}
         />
+        </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "2rem", marginBottom: "10%" }}>
-        <Button type="submit">Create User</Button>
+
+
+     
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "2rem",
+          marginBottom: "10%",
+        }}
+      >
+        <Button onClick={e=>errorHandlers(e)}>Create User</Button>
       </div>
     </form>
   );

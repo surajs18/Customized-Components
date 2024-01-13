@@ -9,14 +9,14 @@ export default function InputPhone(props) {
         <p
           style={{
             marginBottom: "0.5rem",
-            width: props?.width || "18rem",
+            width: props?.width || "17rem",
             fontWeight: 900,
             fontSize: "14px",
             cursor: "default",
             userSelect: "none",
           }}
         >
-          {props?.header}
+          {props?.header} {props?.required && <sup style={{color: "red"}}>*</sup>}
         </p>
       )}
       <PhoneInput
