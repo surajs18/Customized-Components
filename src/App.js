@@ -313,6 +313,8 @@ function App() {
           header: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
           footer: String || Number || HTML Tag || HTML Element {default: none, optional parameter},
           multiple: true||false {default: false, optional parameter},
+          size: Number {default: none, optional parameter},
+          measure: "kb" || "mb" || "gb" {default: "kb", optional parameter, considered only if size is given},
         */}
       </div>
 
@@ -321,7 +323,15 @@ function App() {
 
       <div>
         <h3 style={{ textAlign: "center" }}>User Form</h3>
-        <UserForm />
+        <UserForm form="ADMIN" />
+      </div>
+
+      <br />
+      <br />
+
+      <div>
+        <h3 style={{ textAlign: "center" }}>...</h3>
+        {/* <AdminForm /> */}
       </div>
 
       <br />

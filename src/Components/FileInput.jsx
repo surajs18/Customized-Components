@@ -46,6 +46,11 @@ function FileInput(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [progressAmount, startFakeProgress, stopFakeProgress] =
     useFakeProgress();
+  const measures = {
+    kb: 1024,
+    mb: 1024 * 1024, // 1 MB = 1024 KB
+    gb: 1024 * 1024 * 1024, // 1 GB = 1024 MB = 1024 * 1024 KB
+  };
 
   async function Canceled() {
     if (props?.multiple) {
@@ -67,10 +72,24 @@ function FileInput(props) {
       let readFile = new FileReader();
       readFile.readAsDataURL(f);
       readFile.onload = (e) => {
-        var fd = { ...f, file: e.target.result };
-        props?.multiple
-          ? props.setFiles([...props.file, fd])
-          : props.setFiles(fd);
+        var fd = e.target.result; //{ ...f, file:  };
+        if (props?.size) {
+          let value = measures?.props?.measure || measures.kb
+          // console.log(f.size, props?.size, value)
+          if (f.size < props?.size * value) {
+            console.log(value)
+            props?.multiple
+              ? props.setFiles([...props.file, fd])
+              : props.setFiles(fd);
+          } else {
+            setErrorMessage("File size exceeds 50 KB. Please choose a smaller file.",);
+          }
+        } else {
+          props?.multiple
+              ? props.setFiles([...props.file, fd])
+              : props.setFiles(fd);
+        }
+
         // console.log(fd)
       };
     } else {
@@ -90,8 +109,13 @@ function FileInput(props) {
             cursor: "default",
             userSelect: "none",
           }}
+          title={`${props?.required ? "Required " : ""}${
+            props?.size &&
+            "File size < " + props?.size + (props?.measure || "kb")
+          }`}
         >
           {props?.header}
+          {props?.size && <sup style={{ color: "red" }}>&#x1D4BE;</sup>}
         </p>
       )}
       <div style={{ marginLeft: ".3rem" }}>
@@ -102,10 +126,10 @@ function FileInput(props) {
           value={props.file}
           onDropAccepted={fileHandler}
           multiple={props?.multiple || false}
-          onDropRejected={(e) =>
+          onDropRejected={(e) =>{
             setErrorMessage(`Please upload ${props.type} only`)
-          }
-          onRetry={(e) => setErrorMessage("")}
+          }}
+          onRetry={(e) => {setErrorMessage(""); stopFakeProgress();}}
           onDrop={(acceptedFiles, rejectedFiles) => {
             // handle file upload...
             startFakeProgress();
@@ -119,7 +143,8 @@ function FileInput(props) {
       {props?.footer !== "" && (
         <p
           style={{
-            marginTop: "0rem",
+            marginTop: "0.2rem",
+            marginLeft: "0.5rem",
             width: props?.width || "18rem",
             fontWeight: 400,
             fontSize: "14px",

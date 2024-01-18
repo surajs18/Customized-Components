@@ -14,6 +14,7 @@ function InputBox(props) {
             cursor: "default",
             userSelect: "none",
           }}
+          title={`${props?.required ? "Required" : ""}`}
         >
           {props?.header} {props?.required && <sup style={{color: "red"}}>*</sup>}
         </p>
@@ -52,7 +53,8 @@ function InputBox(props) {
       {props?.footer !== "" && (
         <p
           style={{
-            marginTop: "0rem",
+            marginTop: "0.2rem",
+            marginLeft: "0.5rem",
             width: props?.width || "18rem",
             fontWeight: 400,
             fontSize: "14px",
