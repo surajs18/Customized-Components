@@ -43,14 +43,10 @@ function useFakeProgress() {
 }
 
 function FileInput(props) {
+  console.log(props);
   const [errorMessage, setErrorMessage] = useState("");
   const [progressAmount, startFakeProgress, stopFakeProgress] =
     useFakeProgress();
-  const measures = {
-    kb: 1024,
-    mb: 1024 * 1024, // 1 MB = 1024 KB
-    gb: 1024 * 1024 * 1024, // 1 GB = 1024 MB = 1024 * 1024 KB
-  };
 
   async function Canceled() {
     if (props?.multiple) {
@@ -73,27 +69,24 @@ function FileInput(props) {
       readFile.readAsDataURL(f);
       readFile.onload = (e) => {
         var fd = e.target.result; //{ ...f, file:  };
-        if (props?.size) {
-          let value = measures?.props?.measure || measures.kb
-          // console.log(f.size, props?.size, value)
-          if (f.size < props?.size * value) {
-            console.log(value)
-            props?.multiple
-              ? props.setFiles([...props.file, fd])
-              : props.setFiles(fd);
-          } else {
-            setErrorMessage("File size exceeds 50 KB. Please choose a smaller file.",);
-          }
-        } else {
-          props?.multiple
-              ? props.setFiles([...props.file, fd])
-              : props.setFiles(fd);
-        }
-
-        // console.log(fd)
+        props?.multiple
+          ? props.setFiles([...props.file, fd])
+          : props.setFiles(fd);
       };
     } else {
       setErrorMessage(`Please upload ${props.type} only`);
+    }
+  };
+
+  const onDropReject = (e) => {
+    const f = e[0];
+    var pattern = new RegExp(`${props.type}`);
+    if (!pattern.test(f.type)) {
+      setErrorMessage(`Please upload ${props?.type} only`);
+    } else if (props?.minSize && f.size < props?.minSize) {
+      setErrorMessage(`File size must be >  ${props?.minSize / 1000} kb`);
+    } else if (props?.maxSize && f.size < props?.maxSize) {
+      setErrorMessage(`File size must be <  ${props?.minSize / 1000} kb`);
     }
   };
 
@@ -104,33 +97,46 @@ function FileInput(props) {
           style={{
             marginBottom: "0rem",
             width: props?.width || "18rem",
-            fontWeight: 900,
-            fontSize: "14px",
             cursor: "default",
             userSelect: "none",
           }}
           title={`${props?.required ? "Required " : ""}${
-            props?.size &&
-            "File size < " + props?.size + (props?.measure || "kb")
+            props?.minSize ? "File size > " + props?.minSize / 1000 + "kb" : ""
+          }${
+            props?.maxSize ? "File size < " + props?.maxSize / 1000 + "kb" : ""
           }`}
         >
           {props?.header}
-          {props?.size && <sup style={{ color: "red" }}>&#x1D4BE;</sup>}
+          {(props?.maxSize || props?.minSize) && !props?.required && (
+            <sup style={{ color: "red" }}>&#x1D4BE;</sup>
+          )}
+          {(props?.maxSize || props?.minSize) && props?.required && (
+            <sup style={{ color: "red" }}>*</sup>
+          )}
         </p>
       )}
-      <div style={{ marginLeft: ".3rem" }}>
+      <div
+        style={{
+          marginLeft: ".3rem",
+        }}
+      >
         <FileUploader
           accept={props.type}
           onCancel={Canceled}
           errorMessage={errorMessage}
-          value={props.file}
           onDropAccepted={fileHandler}
           multiple={props?.multiple || false}
-          onDropRejected={(e) =>{
-            setErrorMessage(`Please upload ${props.type} only`)
+          maxSize={props?.maxSize}
+          minSize={props?.minSize}
+          onDropRejected={(e) => {
+            onDropReject(e);
           }}
-          onRetry={(e) => {setErrorMessage(""); stopFakeProgress();}}
-          onDrop={(acceptedFiles, rejectedFiles) => {
+          onRetry={() => {
+            setErrorMessage("");
+            stopFakeProgress();
+          }}
+          onDrop={() => {
+            // acceptedFiles, rejectedFiles
             // handle file upload...
             startFakeProgress();
           }}
@@ -138,6 +144,17 @@ function FileInput(props) {
           progressMessage={
             progressAmount ? `Uploading... ${progressAmount}% of 100%` : ""
           }
+          overrides={{
+            FileDragAndDrop: {
+              style: () => ({
+                height: props?.height,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }),
+            },
+          }}
         />
       </div>
       {props?.footer !== "" && (
@@ -146,8 +163,6 @@ function FileInput(props) {
             marginTop: "0.2rem",
             marginLeft: "0.5rem",
             width: props?.width || "18rem",
-            fontWeight: 400,
-            fontSize: "14px",
             cursor: "default",
             userSelect: "none",
           }}
